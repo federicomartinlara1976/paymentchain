@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: product
+    
+  profiles:
+    active: ${ENV}
+  
+  config.import: "optional:configserver:"
+  cloud:
+    config:
+      name: customer
+      enabled: true
+      uri: http://192.168.1.135:8888

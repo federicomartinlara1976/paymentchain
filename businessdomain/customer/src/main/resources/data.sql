@@ -1,0 +1,1 @@
+INSERT INTO customer (name, phone, iban, surname, address) VALUES ('Laurent', '1111', 'ES123456789', 'xxxx', 'xxx 12');
