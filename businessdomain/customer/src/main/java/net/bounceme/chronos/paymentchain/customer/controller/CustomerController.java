@@ -43,7 +43,8 @@ public class CustomerController {
     
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> put(@PathVariable Long id, @RequestBody CustomerDTO input) {
-        return ResponseEntity.ok(customerService.update(id, input));
+        customerService.update(id, input);
+        return ResponseEntity.noContent().build();
     }
     
     @PostMapping

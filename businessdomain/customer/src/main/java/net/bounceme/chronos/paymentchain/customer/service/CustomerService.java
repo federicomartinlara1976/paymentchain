@@ -23,6 +23,6 @@ public interface CustomerService {
 
 	CustomerDTO save(CustomerDTO input);
 
-	CustomerDTO update(Long id, CustomerDTO input);
+	void update(Long id, CustomerDTO input);
     
 }

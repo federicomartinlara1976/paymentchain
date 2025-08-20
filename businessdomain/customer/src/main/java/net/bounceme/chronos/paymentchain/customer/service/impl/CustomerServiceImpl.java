@@ -61,18 +61,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	public CustomerDTO update(Long id, CustomerDTO input) {
-		Optional<Customer> oCustomer = customerRepository.findById(id);
-		
-		if (oCustomer.isPresent()) {
-			Customer customer = oCustomer.get();
-			customer.setName(input.getName());
-			customer.setPhone(input.getPhone());
+	public void update(Long id, CustomerDTO input) {
+		customerRepository.findById(id).ifPresent(c -> {
+			c.setName(input.getName());
+			c.setPhone(input.getPhone());
 
-			customer = customerRepository.save(customer);
-			return modelMapper.map(customer, CustomerDTO.class);
-		}
-		
-		return null;
+			customerRepository.save(c);
+		});
 	}
 }
