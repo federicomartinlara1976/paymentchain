@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
  */
-package com.paymentchain.customer.controller;
+package net.bounceme.chronos.paymentchain.customer.controller;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -27,13 +27,13 @@ import org.springframework.web.reactive.function.client.WebClient.Builder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.net.HttpHeaders;
-import com.paymentchain.customer.dto.CustomerDTO;
-import com.paymentchain.customer.service.CustomerService;
 
 import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
+import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
 import reactor.netty.http.client.HttpClient;
 
 /**

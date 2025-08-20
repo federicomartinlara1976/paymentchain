@@ -1,4 +1,4 @@
-package com.paymentchain.customer;
+package net.bounceme.chronos.paymentchain.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

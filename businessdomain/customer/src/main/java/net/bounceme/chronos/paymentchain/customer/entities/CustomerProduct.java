@@ -1,4 +1,4 @@
-package com.paymentchain.customer.entities;
+package net.bounceme.chronos.paymentchain.customer.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

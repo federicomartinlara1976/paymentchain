@@ -1,4 +1,4 @@
-package com.paymentchain.customer.dto;
+package net.bounceme.chronos.paymentchain.customer.dto;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.paymentchain.customer.entities;
+package net.bounceme.chronos.paymentchain.customer.entities;
 
 import java.io.Serializable;
 import java.util.List;
