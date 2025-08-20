@@ -59,11 +59,17 @@
 	</dependencies>
 
 	<build>
+	
+		<finalName>customer-${spring.profiles.active}</finalName>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<image>
+						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -72,31 +78,22 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.7.0.1746</version>
-			</plugin>
 		</plugins>
 	</build>
 
 	<profiles>
 		<profile>
 			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<finalName>${project.artifactId}-dev</finalName>
-			</build>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
 		</profile>
 
 		<profile>
-			<id>pro</id>
-			<build>
-				<finalName>${project.artifactId}</finalName>
-			</build>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
 		</profile>
 	</profiles>
 </project>

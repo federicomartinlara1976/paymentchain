@@ -4,6 +4,7 @@
  */
 package net.bounceme.chronos.paymentchain.customer.controller;
 
+import java.net.http.HttpHeaders;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.net.HttpHeaders;
 
 import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
