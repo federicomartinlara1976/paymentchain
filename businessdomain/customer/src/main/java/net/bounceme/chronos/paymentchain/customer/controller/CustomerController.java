@@ -38,7 +38,7 @@ public class CustomerController {
     
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> get(@PathVariable Long id) {
-        return ResponseEntity.ok(customerService.get(id));
+        return ResponseEntity.ok(customerService.get(id).orElse(null));
     }
     
     @PutMapping("/{id}")

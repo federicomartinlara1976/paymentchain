@@ -4,12 +4,9 @@
  */
 package net.bounceme.chronos.paymentchain.customer.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,17 +33,16 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<CustomerDTO> list() {
-		List<Customer> customers = customerRepository.findAll();
-		return CollectionUtils.isNotEmpty(customers) ? customers.stream()
-				.map(customer -> modelMapper.map(customer, CustomerDTO.class)).collect(Collectors.toList())
-				: Collections.emptyList();
+		return customerRepository.findAll()
+				.stream()
+				.map(customer -> modelMapper.map(customer, CustomerDTO.class))
+				.toList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public CustomerDTO get(Long id) {
-		Optional<Customer> oCustomer = customerRepository.findById(id);
-		return oCustomer.isPresent() ? modelMapper.map(oCustomer.get(), CustomerDTO.class) : null;
+	public Optional<CustomerDTO> get(Long id) {
+		return customerRepository.findById(id).map(c -> modelMapper.map(c, CustomerDTO.class));
 	}
 
 	@Override

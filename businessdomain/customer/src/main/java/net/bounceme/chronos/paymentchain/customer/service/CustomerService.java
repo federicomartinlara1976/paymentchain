@@ -5,6 +5,7 @@
 package net.bounceme.chronos.paymentchain.customer.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
 
@@ -16,7 +17,7 @@ public interface CustomerService {
 
 	List<CustomerDTO> list();
 
-	CustomerDTO get(Long id);
+	Optional<CustomerDTO> get(Long id);
 
 	void deleteById(Long id);
 
