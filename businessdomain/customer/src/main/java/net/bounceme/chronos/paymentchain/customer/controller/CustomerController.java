@@ -4,17 +4,10 @@
  */
 package net.bounceme.chronos.paymentchain.customer.controller;
 
-import java.net.http.HttpHeaders;
-import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,18 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.Builder;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import io.netty.channel.ChannelOption;
-import io.netty.channel.epoll.EpollChannelOption;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
-import reactor.netty.http.client.HttpClient;
 
 /**
  *
@@ -46,23 +30,6 @@ public class CustomerController {
     
     @Autowired
     private CustomerService customerService;
-    
-    private WebClient.Builder webClientBuilder;
-    
-    public CustomerController(Builder webClientBuilder) {
-		this.webClientBuilder = webClientBuilder;
-	}
-    
-    HttpClient client = HttpClient.create()
-    		.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-    		.option(ChannelOption.SO_KEEPALIVE, true)
-    		.option(EpollChannelOption.TCP_KEEPIDLE, 300)
-    		.option(EpollChannelOption.TCP_KEEPINTVL, 60)
-    		.responseTimeout(Duration.ofSeconds(1))
-    		.doOnConnected(connection -> {
-    			connection.addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS));
-    			connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
-    		});
 
 	@GetMapping()
     public ResponseEntity<List<CustomerDTO>> list() {
@@ -90,19 +57,4 @@ public class CustomerController {
     	customerService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    
-    private String getProductName(Long id) {
-    	WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-    			.baseUrl("http://192.168.1.135:8090/product")
-    			.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-    			.defaultUriVariables(Collections.singletonMap("url", "http://192.168.1.135:8090/product"))
-    			.build();
-    	
-    	JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
-    			.retrieve().bodyToMono(JsonNode.class).block();
-    	
-    	String name = block.get("name").asText();
-    	return name;
-    }
-    
 }
