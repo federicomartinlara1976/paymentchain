@@ -1,10 +1,8 @@
 spring:
   application:
     name: product
+    version: 1.0.0
     
-  profiles:
-    active: ${ENV}
-  
   config.import: "optional:configserver:"
   cloud:
     config:
