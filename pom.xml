@@ -58,5 +58,6 @@
     <modules>
         <module>businessdomain</module>
         <module>infrastructuradomain</module>
+        <module>billing</module>
     </modules>
 </project>
