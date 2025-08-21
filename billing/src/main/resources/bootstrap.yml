@@ -1,6 +1,7 @@
 spring:
   application:
     name: billing
+    version: 1.0.0
   
   config.import: "optional:configserver:"
   cloud:
