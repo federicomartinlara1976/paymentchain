@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.paymentchain.billing.controller;
+package net.bounceme.chronos.paymentchain.billing.controller;
 
-import com.paymentchain.billing.entities.Invoice;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
@@ -17,7 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import com.paymentchain.billing.respository.InvoiceRepository;
+
+import net.bounceme.chronos.paymentchain.billing.entities.Invoice;
+import net.bounceme.chronos.paymentchain.billing.repository.InvoiceRepository;
+
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 

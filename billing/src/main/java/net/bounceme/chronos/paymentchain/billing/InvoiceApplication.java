@@ -1,4 +1,4 @@
-package com.paymentchain.billing;
+package net.bounceme.chronos.paymentchain.billing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

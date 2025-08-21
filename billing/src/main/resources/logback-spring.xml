@@ -10,7 +10,7 @@
     	</encoder>
     </appender>
 
-    <logger name="net.bounceme.chronos.paymentchain.customer" level="info" additivity="false">
+    <logger name="net.bounceme.chronos.paymentchain.billing" level="info" additivity="false">
     	<appender-ref ref="CONSOLE"/>
     </logger>
 
