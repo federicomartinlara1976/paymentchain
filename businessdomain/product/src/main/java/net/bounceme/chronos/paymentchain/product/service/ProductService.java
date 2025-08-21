@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.paymentchain.product.service;
+package net.bounceme.chronos.paymentchain.product.service;
 
 import java.util.List;
 
-import com.paymentchain.product.dto.ProductDTO;
+import net.bounceme.chronos.paymentchain.product.dto.ProductDTO;
 
 /**
  *

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
  */
-package com.paymentchain.product.controller;
+package net.bounceme.chronos.paymentchain.product.controller;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paymentchain.product.dto.ProductDTO;
-import com.paymentchain.product.service.ProductService;
+import net.bounceme.chronos.paymentchain.product.dto.ProductDTO;
+import net.bounceme.chronos.paymentchain.product.service.ProductService;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.paymentchain.product.config;
+package net.bounceme.chronos.paymentchain.product.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

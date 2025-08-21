@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.paymentchain.product.service.impl;
+package net.bounceme.chronos.paymentchain.product.service.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.paymentchain.product.dto.ProductDTO;
-import com.paymentchain.product.entities.Product;
-import com.paymentchain.product.repository.ProductRepository;
-import com.paymentchain.product.service.ProductService;
+import net.bounceme.chronos.paymentchain.product.dto.ProductDTO;
+import net.bounceme.chronos.paymentchain.product.entities.Product;
+import net.bounceme.chronos.paymentchain.product.repository.ProductRepository;
+import net.bounceme.chronos.paymentchain.product.service.ProductService;
 
 /**
  *
