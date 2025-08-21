@@ -62,12 +62,12 @@ public class InvoiceRestController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        Optional<Invoice> dto = billingRepository.findById(Long.valueOf(id));
-        if (!dto.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        billingRepository.delete(dto.get());
-        return ResponseEntity.ok().build();
+    	return billingRepository.findById(Long.valueOf(id))
+                .map(invoice -> {
+                    billingRepository.delete(invoice);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
     
 }
