@@ -5,12 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>net.bounceme.chronos</groupId>
+		<groupId>net.bounceme.chronos.paymentchain</groupId>
     	<artifactId>businessdomain</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
+	<groupId>net.bounceme.chronos.paymentchain.businessdomain</groupId>
 	<artifactId>product</artifactId>
 	
 	<name>product</name>
@@ -59,44 +60,22 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.7.0.1746</version>
-			</plugin>
-		</plugins>
+		<finalName>product-${spring.profiles.active}</finalName>
 	</build>
 
 	<profiles>
 		<profile>
 			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<finalName>${project.artifactId}-dev</finalName>
-			</build>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
 		</profile>
 
 		<profile>
-			<id>pro</id>
-			<build>
-				<finalName>${project.artifactId}</finalName>
-			</build>
+			<id>prod</id>
+			<properties>
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
 		</profile>
 	</profiles>
 </project>

@@ -5,12 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>net.bounceme.chronos</groupId>
+		<groupId>net.bounceme.chronos.paymentchain</groupId>
     	<artifactId>businessdomain</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
+	<groupId>net.bounceme.chronos.paymentchain.businessdomain</groupId>
 	<artifactId>customer</artifactId>
 	
 	<name>customer</name>
@@ -58,26 +59,7 @@
 	</dependencies>
 
 	<build>
-	
 		<finalName>customer-${spring.profiles.active}</finalName>
-	
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<image>
-						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 
 	<profiles>
