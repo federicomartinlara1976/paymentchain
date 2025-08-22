@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.bounceme.chronos.paymentchain.transactions.respository;
+package net.bounceme.chronos.paymentchain.transactions.repository;
 
 
 import java.util.List;
@@ -19,6 +19,6 @@ import net.bounceme.chronos.paymentchain.transactions.entities.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     
       @Query("SELECT t FROM Transaction t WHERE t.ibanAccount = ?1")
-      public List<Transaction> findByIbanAccount(String ibanAccount);
+      List<Transaction> findByIbanAccount(String ibanAccount);
       
 }

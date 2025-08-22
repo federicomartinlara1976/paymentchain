@@ -5,23 +5,22 @@
  */
 package net.bounceme.chronos.paymentchain.transactions.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import net.bounceme.chronos.paymentchain.transactions.entities.Transaction;
-import net.bounceme.chronos.paymentchain.transactions.respository.TransactionRepository;
-
-import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import net.bounceme.chronos.paymentchain.transactions.dto.TransactionDTO;
+import net.bounceme.chronos.paymentchain.transactions.service.TransactionService;
 
 /**
  *
@@ -32,53 +31,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TransactionRestController {
     
     @Autowired
-    TransactionRepository transactionRepository;
+    TransactionService transactionService;
     
       
     @GetMapping()
-    public List<Transaction> list() {
-        return transactionRepository.findAll();
+    public List<TransactionDTO> list() {
+        return transactionService.list();
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> get(@PathVariable("id") long id) {
-         return transactionRepository.findById(id).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());      
+    public ResponseEntity<TransactionDTO> get(@PathVariable("id") Long id) {      
+         return transactionService.getById(id).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
     @GetMapping("/customer/transactions")
-    public List<Transaction> get(@RequestParam("ibanAccount") String ibanAccount) {
-      return transactionRepository.findByIbanAccount(ibanAccount);      
+    public List<TransactionDTO> get(@RequestParam("ibanAccount") String ibanAccount) {
+      return transactionService.getByIban(ibanAccount);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable("id") long id, @RequestBody Transaction input) {
-        Transaction find = transactionRepository.findById(id).get();
-        if (find != null) {
-            find.setAmount(input.getAmount());
-            find.setChannel(input.getChannel());
-            find.setDate(input.getDate());
-            find.setDescription(input.getDescription());
-            find.setFee(input.getFee());
-            find.setIbanAccount(input.getIbanAccount());
-            find.setReference(input.getReference());
-            find.setStatus(input.getStatus());
-        }
-        Transaction save = transactionRepository.save(find);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<TransactionDTO> put(@PathVariable("id") Long id, @RequestBody TransactionDTO input) {
+        return transactionService.update(id, input).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Transaction input) {
-        Transaction save = transactionRepository.save(input);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<?> post(@RequestBody TransactionDTO input) {
+    	return transactionService.save(input).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        Optional<Transaction> findById = transactionRepository.findById(id);   
-        if(findById.get() != null){               
-                  transactionRepository.delete(findById.get());  
-        }
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        transactionService.deleteById(id);
         return ResponseEntity.ok().build();
     }
     
