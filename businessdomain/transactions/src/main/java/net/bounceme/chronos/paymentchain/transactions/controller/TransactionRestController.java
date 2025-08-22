@@ -24,7 +24,7 @@ import net.bounceme.chronos.paymentchain.transactions.service.TransactionService
 
 /**
  *
- * @author sotobotero
+ * @author Federico Martín
  */
 @RestController
 @RequestMapping("/transaction")
