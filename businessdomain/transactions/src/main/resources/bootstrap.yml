@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: transactions
+    version: 1.0.0
+  
+  config.import: "optional:configserver:"
+  cloud:
+    config:
+      name: customer
+      enabled: true
+      uri: http://192.168.1.135:8888
