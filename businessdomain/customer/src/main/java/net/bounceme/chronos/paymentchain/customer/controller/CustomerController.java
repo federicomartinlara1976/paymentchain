@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -52,6 +53,12 @@ public class CustomerController {
     private CustomerService customerService;
     
     private final WebClient.Builder webClientBuilder;
+    
+    @Value("${application.product.service}")
+    private String productService;
+    
+    @Value("${application.transaction.service}")
+    private String transactionService;
 
 	public CustomerController(Builder webClientBuilder) {
 		this.webClientBuilder = webClientBuilder;
@@ -130,9 +137,9 @@ public class CustomerController {
      */
     private String getProductName(Long id) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://192.168.1.135:8092/product")
+                .baseUrl(productService)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", "http://192.168.1.135:8082/product"))
+                .defaultUriVariables(Collections.singletonMap("url", productService))
                 .build();
         
         JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
@@ -151,7 +158,7 @@ public class CustomerController {
      */
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://192.168.1.135:8093/transaction")
+                .baseUrl(transactionService)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();       
         
