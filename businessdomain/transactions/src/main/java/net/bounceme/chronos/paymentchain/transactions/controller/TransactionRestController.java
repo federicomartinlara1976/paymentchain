@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.paymentchain.transactions.controller;
+package net.bounceme.chronos.paymentchain.transactions.controller;
 
-import com.paymentchain.transactions.entities.Transaction;
-import com.paymentchain.transactions.respository.TransactionRepository;
 import org.springframework.web.bind.annotation.RestController;
+
+import net.bounceme.chronos.paymentchain.transactions.entities.Transaction;
+import net.bounceme.chronos.paymentchain.transactions.respository.TransactionRepository;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Optional;

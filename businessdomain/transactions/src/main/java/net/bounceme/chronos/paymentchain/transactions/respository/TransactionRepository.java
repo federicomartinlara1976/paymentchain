@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.paymentchain.transactions.respository;
+package net.bounceme.chronos.paymentchain.transactions.respository;
 
 
-import com.paymentchain.transactions.entities.Transaction;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import net.bounceme.chronos.paymentchain.transactions.entities.Transaction;
 
 /**
  *

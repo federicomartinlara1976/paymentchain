@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.paymentchain.transactions.entities;
+package net.bounceme.chronos.paymentchain.transactions.entities;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
