@@ -5,11 +5,16 @@
 package net.bounceme.chronos.paymentchain.customer.controller;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
@@ -88,5 +95,25 @@ public class CustomerController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     	customerService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    /**
+     * Call Product Microservice , find a product by Id and return it name
+     *
+     * @param id of product to find
+     * @return name of product if it was find
+     */
+    private String getProductName(Long id) {
+        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+                .baseUrl("http://localhost:8083/product")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:8083/product"))
+                .build();
+        
+        JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
+                .retrieve().bodyToMono(JsonNode.class).block();
+        
+        String name = block.get("name").asText();
+        return name;
     }
 }
