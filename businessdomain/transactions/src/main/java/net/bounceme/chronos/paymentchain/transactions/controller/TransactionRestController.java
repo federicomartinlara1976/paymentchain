@@ -41,17 +41,17 @@ public class TransactionRestController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> get(@PathVariable(name = "id") long id) {
+    public ResponseEntity<Transaction> get(@PathVariable("id") long id) {
          return transactionRepository.findById(id).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());      
     }
     
     @GetMapping("/customer/transactions")
-    public List<Transaction> get(@RequestParam(name = "ibanAccount") String ibanAccount) {
+    public List<Transaction> get(@RequestParam("ibanAccount") String ibanAccount) {
       return transactionRepository.findByIbanAccount(ibanAccount);      
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable(name = "id") long id, @RequestBody Transaction input) {
+    public ResponseEntity<?> put(@PathVariable("id") long id, @RequestBody Transaction input) {
         Transaction find = transactionRepository.findById(id).get();
         if (find != null) {
             find.setAmount(input.getAmount());
@@ -74,7 +74,7 @@ public class TransactionRestController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
         Optional<Transaction> findById = transactionRepository.findById(id);   
         if(findById.get() != null){               
                   transactionRepository.delete(findById.get());  
