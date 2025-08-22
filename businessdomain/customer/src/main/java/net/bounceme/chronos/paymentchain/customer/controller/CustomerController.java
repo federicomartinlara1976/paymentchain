@@ -130,7 +130,7 @@ public class CustomerController {
      */
     private String getProductName(Long id) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://192.168.1.135:8082/product")
+                .baseUrl("http://192.168.1.135:8092/product")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultUriVariables(Collections.singletonMap("url", "http://192.168.1.135:8082/product"))
                 .build();
@@ -151,7 +151,7 @@ public class CustomerController {
      */
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://192.168.1.135:8083/transaction")
+                .baseUrl("http://192.168.1.135:8093/transaction")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();       
         
