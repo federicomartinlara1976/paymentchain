@@ -7,6 +7,7 @@ package net.bounceme.chronos.paymentchain.customer.controller;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
@@ -33,6 +35,7 @@ import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
+import net.bounceme.chronos.paymentchain.customer.dto.CustomerProductDTO;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
 import reactor.netty.http.client.HttpClient;
 
@@ -95,6 +98,23 @@ public class CustomerController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     	customerService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/full")
+    public CustomerDTO getByCode(@RequestParam("code") String code) {
+        CustomerDTO customer = customerService.findByCode(code);
+        
+        if (!Objects.isNull(customer)) {
+            List<CustomerProductDTO> products = customer.getProducts();
+
+            //for each product find it name
+            products.forEach(x -> {
+                String productName = getProductName(x.getProductId());
+                x.setProductName(productName);
+            });
+        }
+        
+        return customer;
     }
     
     /**

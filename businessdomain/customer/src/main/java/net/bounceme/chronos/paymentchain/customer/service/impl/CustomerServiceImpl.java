@@ -5,6 +5,7 @@
 package net.bounceme.chronos.paymentchain.customer.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -68,5 +69,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 			customerRepository.save(c);
 		});
+	}
+
+	@Override
+	public CustomerDTO findByCode(String code) {
+		Customer c = customerRepository.findByCode(code);
+		
+		return (!Objects.isNull(c)) ? modelMapper.map(c, CustomerDTO.class) : null;
 	}
 }

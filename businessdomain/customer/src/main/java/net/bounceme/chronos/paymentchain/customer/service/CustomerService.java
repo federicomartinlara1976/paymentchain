@@ -24,5 +24,7 @@ public interface CustomerService {
 	CustomerDTO save(CustomerDTO input);
 
 	void update(Long id, CustomerDTO input);
+
+	CustomerDTO findByCode(String code);
     
 }
