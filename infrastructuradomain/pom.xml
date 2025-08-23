@@ -9,6 +9,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
     
+    <groupId>net.bounceme.chronos.paymentchain</groupId>
     <artifactId>infrastructuradomain</artifactId>
     <packaging>pom</packaging>
     
@@ -27,4 +28,8 @@
 			</dependency>
     	</dependencies>
     </dependencyManagement>
+    
+    <modules>
+    	<module>configServer</module>
+    </modules>
 </project>
