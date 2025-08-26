@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -52,17 +53,14 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
     
-    private final WebClient.Builder webClientBuilder;
+    @Autowired
+    private WebClient.Builder webClientBuilder;
     
     @Value("${application.product.service}")
     private String productService;
     
     @Value("${application.transaction.service}")
     private String transactionService;
-
-	public CustomerController(Builder webClientBuilder) {
-		this.webClientBuilder = webClientBuilder;
-	}
 	
 	//webClient requires HttpClient library to work propertly       
     HttpClient client = HttpClient.create()
@@ -145,8 +143,7 @@ public class CustomerController {
         JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
                 .retrieve().bodyToMono(JsonNode.class).block();
         
-        String name = block.get("name").asText();
-        return name;
+        return (!Objects.isNull(block)) ? block.get("name").asText() : StringUtils.EMPTY;
     }
     
     /**
