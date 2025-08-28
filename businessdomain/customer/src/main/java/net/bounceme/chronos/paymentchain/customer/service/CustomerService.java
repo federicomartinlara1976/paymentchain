@@ -26,5 +26,9 @@ public interface CustomerService {
 	void update(Long id, CustomerDTO input);
 
 	CustomerDTO findByCode(String code);
+	
+	String getProductName(Long id);
+    
+	List<?> getTransactions(String iban);
     
 }
