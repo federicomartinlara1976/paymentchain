@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -109,7 +110,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<CustomerDTO> post(@RequestBody CustomerDTO input) {
     	input.getProducts().forEach(x -> x.setCustomer(input));
-        return ResponseEntity.ok(customerService.save(input));
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(input));
     }
     
     @DeleteMapping("/{id}")
