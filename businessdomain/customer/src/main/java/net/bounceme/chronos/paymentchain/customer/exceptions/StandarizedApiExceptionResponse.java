@@ -1,4 +1,4 @@
-package net.bounceme.chronos.paymentchain.customer.dto;
+package net.bounceme.chronos.paymentchain.customer.exceptions;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

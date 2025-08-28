@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
-import net.bounceme.chronos.paymentchain.customer.dto.StandarizedApiExceptionResponse;
+import net.bounceme.chronos.paymentchain.customer.exceptions.StandarizedApiExceptionResponse;
 
 @RestControllerAdvice
 @Slf4j
