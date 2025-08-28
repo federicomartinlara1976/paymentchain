@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,12 +80,24 @@ public class CustomerController {
 
 	@GetMapping()
     public ResponseEntity<List<CustomerDTO>> list() {
-        return ResponseEntity.ok(customerService.list());
+		List<CustomerDTO> customers = customerService.list();
+		if (CollectionUtils.isNotEmpty(customers)) {
+			return ResponseEntity.ok(customers);
+		}
+		else {
+			return ResponseEntity.noContent().build();
+		}
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(customerService.get(id).orElse(null));
+    	Optional<CustomerDTO> oCustomer = customerService.get(id);
+    	if (oCustomer.isPresent()) {
+    		return ResponseEntity.ok(oCustomer.get());
+    	}
+    	else {
+    		return ResponseEntity.notFound().build();
+    	}
     }
     
     @PutMapping("/{id}")
