@@ -77,6 +77,7 @@ public class CustomerController {
         Optional<CustomerDTO> oCustomer = customerService.findByCode(code);
         
         if (oCustomer.isPresent()) {
+        	// TODO - Mover este bloque a la capa de lógica de negocio
         	CustomerDTO customer = oCustomer.get();
             List<CustomerProductDTO> products = customer.getProducts();
 
