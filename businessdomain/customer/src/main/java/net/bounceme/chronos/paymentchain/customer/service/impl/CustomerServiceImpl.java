@@ -43,10 +43,10 @@ import reactor.netty.http.client.HttpClient;
 public class CustomerServiceImpl implements CustomerService {
 	
 	@Value("${application.product.service}")
-    private String productService;
+    private String productServiceUrl;
     
     @Value("${application.transaction.service}")
-    private String transactionService;
+    private String transactionServiceUrl;
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -129,9 +129,9 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
     public String getProductName(Long id) {
         WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl(productService)
+                .baseUrl(productServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", productService))
+                .defaultUriVariables(Collections.singletonMap("url", productServiceUrl))
                 .build();
         
         JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
@@ -150,7 +150,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
     public List<?> getTransactions(String iban) {
         WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl(transactionService)
+                .baseUrl(transactionServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();       
         
