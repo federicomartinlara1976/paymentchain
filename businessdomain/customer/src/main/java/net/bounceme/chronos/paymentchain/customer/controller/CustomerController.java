@@ -39,23 +39,19 @@ public class CustomerController {
 	@GetMapping()
     public ResponseEntity<List<CustomerDTO>> list() {
 		List<CustomerDTO> customers = customerService.list();
-		if (CollectionUtils.isNotEmpty(customers)) {
-			return ResponseEntity.ok(customers);
-		}
-		else {
-			return ResponseEntity.noContent().build();
-		}
+		
+		return (CollectionUtils.isNotEmpty(customers))
+			? ResponseEntity.ok(customers)
+			: ResponseEntity.noContent().build();
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> get(@PathVariable("id") Long id) {
     	Optional<CustomerDTO> oCustomer = customerService.get(id);
-    	if (oCustomer.isPresent()) {
-    		return ResponseEntity.ok(oCustomer.get());
-    	}
-    	else {
-    		return ResponseEntity.notFound().build();
-    	}
+    	
+    	return (oCustomer.isPresent())
+    		? ResponseEntity.ok(oCustomer.get())
+    		: ResponseEntity.notFound().build();
     }
     
     @PutMapping("/{id}")
