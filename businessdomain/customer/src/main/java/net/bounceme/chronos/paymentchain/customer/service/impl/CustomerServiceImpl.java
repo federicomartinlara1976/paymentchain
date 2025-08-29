@@ -128,13 +128,13 @@ public class CustomerServiceImpl implements CustomerService {
      */
 	@Override
     public String getProductName(Long id) {
-        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+        WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
                 .baseUrl(productService)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultUriVariables(Collections.singletonMap("url", productService))
                 .build();
         
-        JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
+        JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
                 .retrieve().bodyToMono(JsonNode.class).block();
         
         return (!Objects.isNull(block)) ? block.get("name").asText() : StringUtils.EMPTY;
@@ -149,21 +149,21 @@ public class CustomerServiceImpl implements CustomerService {
      */
 	@Override
     public List<?> getTransactions(String iban) {
-        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+        WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
                 .baseUrl(transactionService)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();       
         
-        Optional<List<?>> transactionsOptional = Optional.ofNullable(build.method(HttpMethod.GET)
-        .uri(uriBuilder -> uriBuilder
-                .path("/customer/transactions")
-                .queryParam("ibanAccount", iban)
-                .build())
-        .retrieve()
-        .bodyToFlux(Object.class)
-        .collectList()
-        .block());       
+        Optional<List<?>> oTransactions = Optional.ofNullable(webClient.method(HttpMethod.GET)
+        		.uri(uriBuilder -> uriBuilder
+        				.path("/customer/transactions")
+        				.queryParam("ibanAccount", iban)
+        				.build())
+        		.retrieve()
+        		.bodyToFlux(Object.class)
+        		.collectList()
+        		.block());       
 
-        return transactionsOptional.orElse(Collections.emptyList());
+        return oTransactions.orElse(Collections.emptyList());
     }
 }
