@@ -5,7 +5,6 @@
 package net.bounceme.chronos.paymentchain.customer.controller;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -78,10 +77,11 @@ public class CustomerController {
     }
     
     @GetMapping("/full")
-    public CustomerDTO getByCode(@RequestParam("code") String code) {
-        CustomerDTO customer = customerService.findByCode(code);
+    public ResponseEntity<CustomerDTO> getByCode(@RequestParam("code") String code) {
+        Optional<CustomerDTO> oCustomer = customerService.findByCode(code);
         
-        if (!Objects.isNull(customer)) {
+        if (oCustomer.isPresent()) {
+        	CustomerDTO customer = oCustomer.get();
             List<CustomerProductDTO> products = customer.getProducts();
 
             //for each product find it name
@@ -93,9 +93,11 @@ public class CustomerController {
             //find all transactions that belong this account number
             List<?> transactions = customerService.getTransactions(customer.getIban());
             customer.setTransactions(transactions);
+            
+            return ResponseEntity.ok(customer);
         }
         
-        return customer;
+        return ResponseEntity.noContent().build();
     }
     
     

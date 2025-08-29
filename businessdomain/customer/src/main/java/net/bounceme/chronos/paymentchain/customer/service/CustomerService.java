@@ -25,7 +25,7 @@ public interface CustomerService {
 
 	void update(Long id, CustomerDTO input);
 
-	CustomerDTO findByCode(String code);
+	Optional<CustomerDTO> findByCode(String code);
 	
 	String getProductName(Long id);
     

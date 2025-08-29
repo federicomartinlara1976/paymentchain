@@ -114,10 +114,10 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public CustomerDTO findByCode(String code) {
+	public Optional<CustomerDTO> findByCode(String code) {
 		Customer c = customerRepository.findByCode(code);
 		
-		return (!Objects.isNull(c)) ? modelMapper.map(c, CustomerDTO.class) : null;
+		return (!Objects.isNull(c)) ? Optional.of(modelMapper.map(c, CustomerDTO.class)) : Optional.empty();
 	}
 	
 	/**
