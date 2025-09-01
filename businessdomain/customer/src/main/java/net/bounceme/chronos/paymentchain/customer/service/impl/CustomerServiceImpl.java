@@ -120,6 +120,8 @@ public class CustomerServiceImpl implements CustomerService {
         
         if (!Objects.isNull(c)) {
         	CustomerDTO customer = modelMapper.map(c, CustomerDTO.class);
+        	
+        	// Set the products completed information
             customer.setProducts(c.getProducts().stream()
             		.map(p -> {
             			CustomerProductDTO cp = modelMapper.map(p, CustomerProductDTO.class);
@@ -129,7 +131,7 @@ public class CustomerServiceImpl implements CustomerService {
             		})
             		.toList());
             
-            //find all transactions that belong this account number
+            // find all transactions that belong this account number
             List<?> transactions = getTransactions(customer.getIban());
             customer.setTransactions(transactions);
             
