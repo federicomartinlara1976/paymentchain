@@ -36,6 +36,9 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+	/**
+	 * @return
+	 */
 	@GetMapping()
     public ResponseEntity<List<CustomerDTO>> list() {
 		List<CustomerDTO> customers = customerService.list();
@@ -45,6 +48,10 @@ public class CustomerController {
 			: ResponseEntity.noContent().build();
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> get(@PathVariable("id") Long id) {
     	Optional<CustomerDTO> oCustomer = customerService.get(id);
@@ -54,18 +61,31 @@ public class CustomerController {
     		: ResponseEntity.notFound().build();
     }
     
+    /**
+     * @param id
+     * @param input
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> put(@PathVariable("id") Long id, @RequestBody CustomerDTO input) {
         customerService.update(id, input);
         return ResponseEntity.noContent().build();
     }
     
+    /**
+     * @param input
+     * @return
+     */
     @PostMapping
     public ResponseEntity<CustomerDTO> post(@RequestBody CustomerDTO input) {
     	input.getProducts().forEach(x -> x.setCustomer(input));
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(input));
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     	customerService.deleteById(id);
