@@ -74,10 +74,11 @@ public class CustomerController {
     
     @GetMapping("/full")
     public ResponseEntity<CustomerDTO> getByCode(@RequestParam("code") String code) {
-        Optional<CustomerDTO> oCustomer = customerService.findByCode(code);
+        
+    	// TODO - Mover este bloque a la capa de lógica de negocio, devolvería una instancia de CustomerDTO
+    	Optional<CustomerDTO> oCustomer = customerService.findByCode(code);
         
         if (oCustomer.isPresent()) {
-        	// TODO - Mover este bloque a la capa de lógica de negocio
         	CustomerDTO customer = oCustomer.get();
             List<CustomerProductDTO> products = customer.getProducts();
 
