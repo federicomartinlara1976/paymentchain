@@ -44,9 +44,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProductDTO get(Long id) {
-		Optional<Product> oCustomer = productRepository.findById(id);
-		return oCustomer.isPresent() ? modelMapper.map(oCustomer.get(), ProductDTO.class) : null;
+	public Optional<ProductDTO> get(Long id) {
+		Optional<Product> oProduct = productRepository.findById(id);
+		return oProduct.map(p -> modelMapper.map(p, ProductDTO.class));
 	}
 
 	@Override

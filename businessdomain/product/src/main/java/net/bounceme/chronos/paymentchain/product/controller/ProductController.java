@@ -5,8 +5,10 @@
 package net.bounceme.chronos.paymentchain.product.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +46,15 @@ public class ProductController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(productService.get(id));
+    public ResponseEntity<Optional<ProductDTO>> get(@PathVariable("id") Long id) {
+        Optional<ProductDTO> oProduct = productService.get(id);
+        
+        if (oProduct.isPresent()) {
+        	return ResponseEntity.ok(oProduct);
+        }
+        else {
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     
     /**

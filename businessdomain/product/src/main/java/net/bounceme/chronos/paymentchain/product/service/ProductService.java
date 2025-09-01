@@ -5,6 +5,7 @@
 package net.bounceme.chronos.paymentchain.product.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import net.bounceme.chronos.paymentchain.product.dto.ProductDTO;
 
@@ -23,7 +24,7 @@ public interface ProductService {
 	 * @param id
 	 * @return
 	 */
-	ProductDTO get(Long id);
+	Optional<ProductDTO> get(Long id);
 
 	/**
 	 * @param id
