@@ -6,17 +6,20 @@ package net.bounceme.chronos.paymentchain.customer.service.impl;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
@@ -29,9 +32,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import lombok.SneakyThrows;
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerProductDTO;
 import net.bounceme.chronos.paymentchain.customer.entities.Customer;
+import net.bounceme.chronos.paymentchain.customer.exceptions.BussinessRuleException;
 import net.bounceme.chronos.paymentchain.customer.repository.CustomerRepository;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
 import reactor.netty.http.client.HttpClient;
@@ -97,7 +102,21 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
+	@SneakyThrows(BussinessRuleException.class)
 	public CustomerDTO save(CustomerDTO input) {
+		if (CollectionUtils.isNotEmpty(input.getProducts())) {
+			for (Iterator<CustomerProductDTO> it = input.getProducts().iterator(); it.hasNext();) {
+				CustomerProductDTO dto = it.next();
+				String productName = getProductName(dto.getProductId());
+				if (StringUtils.isBlank(productName)) {
+					throw new BussinessRuleException("1025", "Error validacion, el producto con id " + dto.getProductId() + " no existe", HttpStatus.PRECONDITION_REQUIRED);
+				}
+				else {
+					dto.setCustomer(input);
+				}
+			}
+		}
+		
 		Customer customer = modelMapper.map(input, Customer.class);
 		customer = customerRepository.save(customer);
 		return modelMapper.map(customer, CustomerDTO.class);
@@ -125,8 +144,7 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setProducts(c.getProducts().stream()
             		.map(p -> {
             			CustomerProductDTO cp = modelMapper.map(p, CustomerProductDTO.class);
-            			String productName = getProductName(cp.getProductId());
-                    	cp.setProductName(productName);
+            			cp.setProductName(getProductName(cp.getProductId()));
                     	return cp;
             		})
             		.toList());

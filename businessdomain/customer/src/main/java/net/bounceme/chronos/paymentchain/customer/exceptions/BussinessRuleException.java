@@ -3,10 +3,12 @@ package net.bounceme.chronos.paymentchain.customer.exceptions;
 import org.springframework.http.HttpStatus;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class BussinessRuleException extends Exception {
 
 	private static final long serialVersionUID = 426261490121942404L;

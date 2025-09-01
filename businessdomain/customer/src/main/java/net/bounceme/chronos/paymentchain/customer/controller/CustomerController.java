@@ -77,8 +77,7 @@ public class CustomerController {
      */
     @PostMapping
     public ResponseEntity<CustomerDTO> post(@RequestBody CustomerDTO input) {
-    	input.getProducts().forEach(x -> x.setCustomer(input));
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(input));
+    	return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(input));
     }
     
     /**
