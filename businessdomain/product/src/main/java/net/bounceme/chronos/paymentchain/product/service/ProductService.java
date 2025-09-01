@@ -14,14 +14,33 @@ import net.bounceme.chronos.paymentchain.product.dto.ProductDTO;
  */
 public interface ProductService {
 
+	/**
+	 * @return
+	 */
 	List<ProductDTO> list();
 
+	/**
+	 * @param id
+	 * @return
+	 */
 	ProductDTO get(Long id);
 
+	/**
+	 * @param id
+	 */
 	void deleteById(Long id);
 
+	/**
+	 * @param input
+	 * @return
+	 */
 	ProductDTO save(ProductDTO input);
 
+	/**
+	 * @param id
+	 * @param input
+	 * @return
+	 */
 	ProductDTO update(Long id, ProductDTO input);
     
 }

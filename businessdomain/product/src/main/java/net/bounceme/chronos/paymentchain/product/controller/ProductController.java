@@ -31,26 +31,46 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     
+    /**
+     * @return
+     */
     @GetMapping()
     public ResponseEntity<List<ProductDTO>> list() {
         return ResponseEntity.ok(productService.list());
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.get(id));
     }
     
+    /**
+     * @param id
+     * @param input
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> put(@PathVariable("id") Long id, @RequestBody ProductDTO input) {
         return ResponseEntity.ok(productService.update(id, input));
     }
     
+    /**
+     * @param input
+     * @return
+     */
     @PostMapping
     public ResponseEntity<ProductDTO> post(@RequestBody ProductDTO input) {
         return ResponseEntity.ok(productService.save(input));
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     	productService.deleteById(id);

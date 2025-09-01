@@ -32,33 +32,56 @@ public class TransactionRestController {
     
     @Autowired
     TransactionService transactionService;
-    
       
+    /**
+     * @return
+     */
     @GetMapping()
     public List<TransactionDTO> list() {
         return transactionService.list();
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<TransactionDTO> get(@PathVariable("id") Long id) {      
          return transactionService.getById(id).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
+    /**
+     * @param ibanAccount
+     * @return
+     */
     @GetMapping("/customer/transactions")
     public List<TransactionDTO> get(@RequestParam("ibanAccount") String ibanAccount) {
       return transactionService.getByIban(ibanAccount);
     }
     
+    /**
+     * @param id
+     * @param input
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<TransactionDTO> put(@PathVariable("id") Long id, @RequestBody TransactionDTO input) {
         return transactionService.update(id, input).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
+    /**
+     * @param input
+     * @return
+     */
     @PostMapping
     public ResponseEntity<?> post(@RequestBody TransactionDTO input) {
     	return transactionService.save(input).map(x -> ResponseEntity.ok(x)).orElse(ResponseEntity.notFound().build());
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         transactionService.deleteById(id);
