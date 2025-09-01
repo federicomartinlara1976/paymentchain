@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
-import net.bounceme.chronos.paymentchain.customer.dto.CustomerProductDTO;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
 
 /**
@@ -94,28 +93,10 @@ public class CustomerController {
     
     @GetMapping("/full")
     public ResponseEntity<CustomerDTO> getByCode(@RequestParam("code") String code) {
-        
-    	// TODO - Mover este bloque a la capa de lógica de negocio, devolvería una instancia de CustomerDTO
-    	Optional<CustomerDTO> oCustomer = customerService.findByCode(code);
-        
-        if (oCustomer.isPresent()) {
-        	CustomerDTO customer = oCustomer.get();
-            List<CustomerProductDTO> products = customer.getProducts();
-
-            //for each product find it name
-            products.forEach(x -> {
-                String productName = customerService.getProductName(x.getProductId());
-                x.setProductName(productName);
-            });
-            
-            //find all transactions that belong this account number
-            List<?> transactions = customerService.getTransactions(customer.getIban());
-            customer.setTransactions(transactions);
-            
-            return ResponseEntity.ok(customer);
-        }
-        
-        return ResponseEntity.noContent().build();
+    	Optional<CustomerDTO> oCustomer = customerService.getByCode(code);
+    	return (oCustomer.isPresent())
+    		? ResponseEntity.ok(oCustomer.get())
+    		: ResponseEntity.notFound().build();
     }
     
     

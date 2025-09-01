@@ -30,6 +30,7 @@ import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
+import net.bounceme.chronos.paymentchain.customer.dto.CustomerProductDTO;
 import net.bounceme.chronos.paymentchain.customer.entities.Customer;
 import net.bounceme.chronos.paymentchain.customer.repository.CustomerRepository;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
@@ -114,20 +115,31 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Optional<CustomerDTO> findByCode(String code) {
+	public Optional<CustomerDTO> getByCode(String code) {
 		Customer c = customerRepository.findByCode(code);
-		
-		return (!Objects.isNull(c)) ? Optional.of(modelMapper.map(c, CustomerDTO.class)) : Optional.empty();
+        
+        if (!Objects.isNull(c)) {
+        	CustomerDTO customer = modelMapper.map(c, CustomerDTO.class);
+            customer.setProducts(c.getProducts().stream()
+            		.map(p -> {
+            			CustomerProductDTO cp = modelMapper.map(p, CustomerProductDTO.class);
+            			String productName = getProductName(cp.getProductId());
+                    	cp.setProductName(productName);
+                    	return cp;
+            		})
+            		.toList());
+            
+            //find all transactions that belong this account number
+            List<?> transactions = getTransactions(customer.getIban());
+            customer.setTransactions(transactions);
+            
+            return Optional.of(customer);
+        }
+        
+        return Optional.empty();
 	}
 	
-	/**
-     * Call Product Microservice , find a product by Id and return it name
-     *
-     * @param id of product to find
-     * @return name of product if it was find
-     */
-	@Override
-    public String getProductName(Long id) {
+	private String getProductName(Long id) {
         WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
                 .baseUrl(productServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -140,15 +152,7 @@ public class CustomerServiceImpl implements CustomerService {
         return (!Objects.isNull(block)) ? block.get("name").asText() : StringUtils.EMPTY;
     }
     
-    /**
-     * Call Transaction Microservice and Find all transaction that belong to the
-     * account give
-     *
-     * @param iban account number of the customer
-     * @return All transaction that belong this account
-     */
-	@Override
-    public List<?> getTransactions(String iban) {
+    private List<?> getTransactions(String iban) {
         WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
                 .baseUrl(transactionServiceUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

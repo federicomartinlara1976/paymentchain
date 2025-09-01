@@ -47,18 +47,6 @@ public interface CustomerService {
 	 * @param code
 	 * @return
 	 */
-	Optional<CustomerDTO> findByCode(String code);
-	
-	/**
-	 * @param id
-	 * @return
-	 */
-	String getProductName(Long id);
-    
-	/**
-	 * @param iban
-	 * @return
-	 */
-	List<?> getTransactions(String iban);
+	Optional<CustomerDTO> getByCode(String code);
     
 }
