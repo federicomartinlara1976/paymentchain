@@ -4,6 +4,7 @@
  */
 package net.bounceme.chronos.paymentchain.customer.service.impl;
 
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -102,8 +104,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	@SneakyThrows(BussinessRuleException.class)
-	public CustomerDTO save(CustomerDTO input) {
+	public CustomerDTO save(CustomerDTO input) throws BussinessRuleException, UnknownHostException {
 		if (CollectionUtils.isNotEmpty(input.getProducts())) {
 			for (Iterator<CustomerProductDTO> it = input.getProducts().iterator(); it.hasNext();) {
 				CustomerProductDTO dto = it.next();
@@ -159,17 +160,29 @@ public class CustomerServiceImpl implements CustomerService {
         return Optional.empty();
 	}
 	
+	@SneakyThrows(UnknownHostException.class)
 	private String getProductName(Long id) {
-        WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl(productServiceUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", productServiceUrl))
-                .build();
-        
-        JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
-                .retrieve().bodyToMono(JsonNode.class).block();
-        
-        return (!Objects.isNull(block)) ? block.get("name").asText() : StringUtils.EMPTY;
+		String name = StringUtils.EMPTY;
+		
+		try {
+	        WebClient webClient = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+	                .baseUrl(productServiceUrl)
+	                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+	                .defaultUriVariables(Collections.singletonMap("url", productServiceUrl))
+	                .build();
+	        
+	        JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
+	                .retrieve().bodyToMono(JsonNode.class).block();
+	        name = block.get("name").asText();
+	        return name;
+		} catch (WebClientResponseException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+				return StringUtils.EMPTY;
+			}
+			else {
+				throw new UnknownHostException(e.getMessage());
+			}
+		}
     }
     
     private List<?> getTransactions(String iban) {

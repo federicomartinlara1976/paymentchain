@@ -23,7 +23,7 @@ class ApiExceptionHandler {
 	
 	@ExceptionHandler(BussinessRuleException.class)
 	public ResponseEntity<?> handleBussinessRuleException(BussinessRuleException ex) {
-		StandarizedApiExceptionResponse exception = new StandarizedApiExceptionResponse("TECNICO", "Input Ouput error", "1024", ex.getMessage(), null);
+		StandarizedApiExceptionResponse exception = new StandarizedApiExceptionResponse("TECNICO", "Input Ouput error", ex.getCode(), ex.getMessage(), null);
 		
 		log.error("ERROR:", ex);
 

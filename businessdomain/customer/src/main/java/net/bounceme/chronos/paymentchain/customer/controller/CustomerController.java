@@ -4,6 +4,7 @@
  */
 package net.bounceme.chronos.paymentchain.customer.controller;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
+import net.bounceme.chronos.paymentchain.customer.exceptions.BussinessRuleException;
 import net.bounceme.chronos.paymentchain.customer.service.CustomerService;
 
 /**
@@ -76,7 +78,7 @@ public class CustomerController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<CustomerDTO> post(@RequestBody CustomerDTO input) {
+    public ResponseEntity<CustomerDTO> post(@RequestBody CustomerDTO input) throws BussinessRuleException, UnknownHostException {
     	return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(input));
     }
     

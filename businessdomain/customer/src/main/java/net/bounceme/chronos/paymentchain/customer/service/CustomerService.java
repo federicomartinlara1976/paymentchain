@@ -4,10 +4,12 @@
  */
 package net.bounceme.chronos.paymentchain.customer.service;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
 import net.bounceme.chronos.paymentchain.customer.dto.CustomerDTO;
+import net.bounceme.chronos.paymentchain.customer.exceptions.BussinessRuleException;
 
 /**
  *
@@ -35,7 +37,7 @@ public interface CustomerService {
 	 * @param input
 	 * @return
 	 */
-	CustomerDTO save(CustomerDTO input);
+	CustomerDTO save(CustomerDTO input) throws BussinessRuleException, UnknownHostException;
 
 	/**
 	 * @param id
