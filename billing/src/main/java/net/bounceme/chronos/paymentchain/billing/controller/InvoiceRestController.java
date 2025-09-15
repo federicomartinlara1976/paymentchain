@@ -24,6 +24,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.bounceme.chronos.paymentchain.billing.common.InvoiceRequestMapper;
+import net.bounceme.chronos.paymentchain.billing.common.InvoiceResponseMapper;
+import net.bounceme.chronos.paymentchain.billing.dto.InvoiceRequest;
+import net.bounceme.chronos.paymentchain.billing.dto.InvoiceResponse;
 import net.bounceme.chronos.paymentchain.billing.entities.Invoice;
 import net.bounceme.chronos.paymentchain.billing.repository.InvoiceRepository;
 
@@ -39,12 +43,19 @@ public class InvoiceRestController {
     @Autowired
     InvoiceRepository billingRepository;
     
+    @Autowired
+    InvoiceRequestMapper invoiceRequestMapper;
+    
+    @Autowired
+    InvoiceResponseMapper invoiceResponseMapper;
+    
     @Operation(description = "Return all invoices bundled into Response", summary = "Return 204 if no data found")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
     		@ApiResponse(responseCode = "500", description = "Internal error")})
     @GetMapping()
-    public List<Invoice> list() {
-        return billingRepository.findAll();
+    public List<InvoiceResponse> list() {
+        List<Invoice> invoices = billingRepository.findAll();
+        return invoiceResponseMapper.InvoiceListToInvoiceResponseList(invoices);
     }
     
     @GetMapping("/{id}")
@@ -58,14 +69,22 @@ public class InvoiceRestController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Invoice input) {
-        return null;
+    public ResponseEntity<InvoiceResponse> put(@PathVariable String id, @RequestBody InvoiceRequest input) {
+    	InvoiceResponse invoiceResponse = null;
+    	Optional<Invoice> findById = billingRepository.findById(Long.valueOf(id));
+    	if (findById.isPresent()) {
+    		Invoice save = billingRepository.save(findById.get());
+    		invoiceResponse = invoiceResponseMapper.InvoiceToInvoiceResponse(save);
+    	}
+        return ResponseEntity.ok(invoiceResponse);
     }
     
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Invoice input) {
-        Invoice save = billingRepository.save(input);
-        return ResponseEntity.ok(save);
+    public ResponseEntity<InvoiceResponse> post(@RequestBody InvoiceRequest input) {
+    	Invoice invoice = invoiceRequestMapper.InvoiceRequestToInvoice(input);
+        Invoice save = billingRepository.save(invoice);
+        InvoiceResponse invoiceResponse = invoiceResponseMapper.InvoiceToInvoiceResponse(save);
+        return ResponseEntity.ok(invoiceResponse);
     }
     
     @DeleteMapping("/{id}")
