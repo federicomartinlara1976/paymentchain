@@ -23,10 +23,10 @@ import lombok.NoArgsConstructor;
 @Schema(name = "InvoiceResponse", description = "Model represent a invoice on database")
 public class InvoiceResponse {
 	
-	private Long id;
+	private Long invoiceId;
 	
 	@Schema(name = "customerId", requiredMode = RequiredMode.REQUIRED, example = "2", defaultValue = "1", description = "Unique id of customer that represent the owner of invoice")
-	private Long customerId;
+	private Long customer;
 	
 	@Schema(name = "number", requiredMode = RequiredMode.REQUIRED, example = "3", defaultValue = "8", description = "Number given on fisical invoice")
 	private String number;
