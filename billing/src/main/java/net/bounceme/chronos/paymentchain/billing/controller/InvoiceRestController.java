@@ -59,10 +59,11 @@ public class InvoiceRestController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<?>  get(@PathVariable long id) {
+    public ResponseEntity<InvoiceResponse>  get(@PathVariable long id) {
           Optional<Invoice> invoice = billingRepository.findById(id);
         if (invoice.isPresent()) {
-            return new ResponseEntity<>(invoice.get(), HttpStatus.OK);
+        	InvoiceResponse invoiceResponse = invoiceResponseMapper.InvoiceToInvoiceResponse(invoice.get());
+            return new ResponseEntity<>(invoiceResponse, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
